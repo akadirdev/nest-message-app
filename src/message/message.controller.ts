@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { MessageService } from './message.service';
+import { IMessage } from './message.interface';
 
-@Controller('/message')
+@Controller('/messages')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @Get()
-  getHello(): string {
-    return this.messageService.getHello();
+  @Get(':userId/with/:friendId')
+  getMessages(
+    @Param('userId') userId: string,
+    @Param('friendId') friendId: string,
+  ): IMessage[] {
+    return this.messageService.getMessages(userId, friendId);
   }
 }
